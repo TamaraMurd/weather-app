@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+<div class="app" :class="{ temno: temnoRezim }">
 
     <div class="oblaci">
       <div class="oblak oblak1">☁️</div>
@@ -11,12 +11,15 @@
 
     <header>
       <h1>🌤 Временска прогноза</h1>
-      <nav>
-        <NuxtLink to="/">Дневна прогноза</NuxtLink>
-        <NuxtLink to="/forecast">5-Дневна прогноза</NuxtLink>
-        <NuxtLink to="/feedback">Остави мислење</NuxtLink>
-        <NuxtLink to="/about">За нас</NuxtLink>
-      </nav>
+        <nav>
+          <NuxtLink to="/">Дневна прогноза</NuxtLink>
+          <NuxtLink to="/forecast">5-Дневна прогноза</NuxtLink>
+          <NuxtLink to="/feedback">Остави мислење</NuxtLink>
+          <NuxtLink to="/about">За нас</NuxtLink>
+            <button class="modeBtn" @click="promeniRezim">
+              {{ temnoRezim ? 'Светла позадина -> ☀️' : ' Темна позадина -> 🌙' }}
+            </button>
+        </nav>
     </header>
 
     <div class="layout">
@@ -48,6 +51,13 @@
 
   </div>
 </template>
+<script setup>
+const temnoRezim = ref(false)
+
+function promeniRezim() {
+  temnoRezim.value = !temnoRezim.value
+}
+</script>
 <style>
 * {
   margin: 0;
@@ -202,5 +212,39 @@ footer {
   margin-top: 4px;
   font-size: 0.75rem;
   color: rgba(255,255,255,0.35);
+}
+
+.modeBtn {
+  color: rgba(255,255,255,0.9);
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.modeBtn:hover {
+  background: rgba(0,0,0,0.35);
+}
+
+.app.temno {
+  background: linear-gradient(135deg, #041c3a, #062a52, #0a1f38);
+}
+
+.app.temno .sidecard {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.app.temno nav a {
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.3);
+}
+
+.app.temno footer {
+  background: rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 </style>

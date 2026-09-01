@@ -2,7 +2,7 @@
   <div class="page">
 
 <div class="logo">
-<img src="/logo.png" class="logo" />
+<img :src="'/logo.png'" class="logo" />
 </div>
 
     <div class="naslov">

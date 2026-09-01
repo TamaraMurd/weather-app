@@ -1,7 +1,6 @@
 <template>
   <div class="about">
 
-
     <div class="naslov">
       <h2>За апликацијата 🌤</h2>
     </div>
@@ -54,8 +53,8 @@
     </div>
 
     <div class="card autor">
-      <h3>👨‍💻 Изработија</h3>
-      <p>Тамара Мурџоска и Паулина Кипревска</p>
+      <h3>👨‍💻Изработи:</h3>
+      <p>Тамара Мурџоска</p>
       <p class="subtitle">ФИНКИ</p>
     </div>
 

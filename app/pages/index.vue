@@ -2,7 +2,7 @@
   <div class="page">
 
 <div class="logo">
-<img src="/logo.png" class="logo" />
+<img :src="'/logo.png'" class="logo" />
 </div>
 
     <div class="dobrodojde">
@@ -18,6 +18,7 @@
         @keyup.enter="fetchWeather"
       />
       <button @click="fetchWeather">Барај</button>
+      <button @click="najdiMojaLokacija" class="lokacijaBtn">📍 Моја локација</button>
     </div>
 
 
@@ -35,34 +36,45 @@
       </div>
     </div>
 
-    <div v-if="weather" class="result">
-      <h2>{{ weather.name }}, {{ weather.sys.country }}</h2>
-      <img 
-        :src="`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`"
-        :alt="weather.weather[0].description"
-      />
-      <p class="opis">{{ weather.weather[0].description }}</p>
-      <p class="temp">{{ Math.round(weather.main.temp) }}°C</p>
-      <div class="detali">
-        <div class="detalItem">
-          <span>💧</span>
-          <span>{{ weather.main.humidity }}%</span>
-          <span>Влажност</span>
-        </div>
-        <div class="detalItem">
-          <span>💨</span>
-          <span>{{ weather.wind.speed }} m/s</span>
-          <span>Ветер</span>
-        </div>
-        <div class="detalItem">
-          <span>🌡</span>
-          <span>{{ Math.round(weather.main.feels_like) }}°C</span>
-          <span>Се чувствува</span>
-        </div>
-      </div>
-    </div>
+<div v-if="loading" class="spinner"></div>
 
-    <p v-else class="poraka">Внеси град за да го видиш времето ☝️</p>
+<div v-else-if="greska" class="greskaBox">
+  ⚠️ {{ greska }}
+</div>
+
+<div v-else-if="weather" class="result">
+  <h2>{{ weather.name }}, {{ weather.sys.country }}</h2>
+  <img 
+    :src="`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`"
+    :alt="weather.weather[0].description"
+  />
+  <p class="opis">{{ weather.weather[0].description }}</p>
+  <p class="temp">
+    {{ pretvoriTemp(weather.main.temp) }}°{{ edinica }}
+    <button class="unitBtn" @click="promeniEdinica">
+      Смени на °{{ edinica === 'C' ? 'F' : 'C' }}
+    </button>
+  </p>
+  <div class="detali">
+    <div class="detalItem">
+      <span>💧</span>
+      <span>{{ weather.main.humidity }}%</span>
+      <span>Влажност</span>
+    </div>
+    <div class="detalItem">
+      <span>💨</span>
+      <span>{{ weather.wind.speed }} m/s</span>
+      <span>Ветер</span>
+    </div>
+    <div class="detalItem">
+      <span>🌡</span>
+      <span>{{ pretvoriTemp(weather.main.feels_like) }}°{{ edinica }}</span>
+      <span>Се чувствува</span>
+    </div>
+  </div>
+</div>
+
+<p v-else class="poraka">Внеси град за да го видиш времето ☝️</p>
 
     <div v-if="posledniBarani.length > 0" class="posledni">
       <p class="label">🕐 Последно пребарувани:</p>
@@ -86,12 +98,29 @@ const config = useRuntimeConfig()
 
 const grad = ref('')
 const weather = ref(null)
+const loading = ref(false)
+const greska = ref('')
 const posledniBarani = ref([])
 const datum = ref('')
 const cas = ref('')
 
 
 const popularni = ['Skopje', 'London', 'New York', 'Paris', 'Tokyo']
+
+
+const edinica = ref('C') // 'C' ili 'F'
+
+function pretvoriTemp(tempC) {
+  if (edinica.value === 'F') {
+    return Math.round(tempC * 9/5 + 32)
+  }
+  return Math.round(tempC)
+}
+
+function promeniEdinica() {
+  edinica.value = edinica.value === 'C' ? 'F' : 'C'
+} 
+
 
 //pri vcituvanje na stranicata se povikkuva i  go azurira sekoja skunda 1000
 onMounted(() => {
@@ -116,28 +145,76 @@ function azurirajVreme() {
 async function fetchWeather() {
   if (!grad.value) return
 
+  loading.value = true
+  greska.value = ''
+  weather.value = null
+
   const apiKey = config.public.weatherApiKey
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${grad.value}&appid=${apiKey}&units=metric`
 
-  const response = await fetch(url)
-  const data = await response.json()
+  try {
+    const response = await fetch(url)
+    const data = await response.json()
 
-  if (response.ok) {
-    weather.value = data
+    if (response.ok) {
+      weather.value = data
 
-
-    if (!posledniBarani.value.includes(grad.value)) {
-      posledniBarani.value.unshift(grad.value)
-      if (posledniBarani.value.length > 4) {
-        posledniBarani.value.pop()
+      if (!posledniBarani.value.includes(grad.value)) {
+        posledniBarani.value.unshift(grad.value)
+        if (posledniBarani.value.length > 4) {
+          posledniBarani.value.pop()
+        }
       }
+    } else {
+      greska.value = 'Градот не е пронајден. Провери го името и пробај повторно.'
     }
-  } else {
-    weather.value = null
-    alert('Градот не е пронајден!')
+  } catch (err) {
+    greska.value = 'Проблем со конекцијата до API-то. Провери го интернетот и пробај повторно.'
+  } finally {
+    loading.value = false
   }
 }
 
+
+function najdiMojaLokacija() {
+  if (!navigator.geolocation) {
+    greska.value = 'Твојот browser не поддржува геолокација.'
+    return
+  }
+
+  loading.value = true
+  greska.value = ''
+  weather.value = null
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude
+      const lon = position.coords.longitude
+      const apiKey = config.public.weatherApiKey
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+
+      try {
+        const response = await fetch(url)
+        const data = await response.json()
+
+        if (response.ok) {
+          weather.value = data
+          grad.value = data.name
+        } else {
+          greska.value = 'Не успеав да го најдам времето за твојата локација.'
+        }
+      } catch (err) {
+        greska.value = 'Проблем со конекцијата. Пробај повторно.'
+      } finally {
+        loading.value = false
+      }
+    },
+    (error) => {
+      loading.value = false
+      greska.value = 'Не дозволи пристап до локацијата, или има проблем со GPS.'
+    }
+  )
+}
 
 function brzoBaraj(imeGrad) {
   grad.value = imeGrad   
@@ -302,5 +379,41 @@ button:hover { background: rgba(0,0,0,0.35); }
 .poraka {
   color: rgba(255,255,255,0.45);
   font-size: 1rem;
+}
+
+.unitBtn {
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  margin-left: 12px;
+  vertical-align: middle;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: vrti 0.8s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes vrti {
+  to { transform: rotate(360deg); }
+}
+
+.greskaBox {
+  background: rgba(220, 50, 50, 0.2);
+  border: 1px solid rgba(220, 50, 50, 0.4);
+  border-radius: 16px;
+  padding: 16px 24px;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.95rem;
+}
+
+.lokacijaBtn {
+  white-space: nowrap;
 }
 </style>

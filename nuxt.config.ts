@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  srcDir: 'app/',   // ← додај го ова
+  srcDir: 'app/',   
 
   devtools: { enabled: true },
 
