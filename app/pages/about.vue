@@ -72,6 +72,7 @@
   gap: 20px;
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
 .naslov h2 {
@@ -117,7 +118,6 @@
   font-size: 0.95rem;
 }
 
-/* GRID ЗА ТЕХНОЛОГИИ */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -149,7 +149,6 @@
   color: rgba(255,255,255,0.55);
 }
 
-/* АВТОР */
 .autor {
   text-align: center;
 }
@@ -173,5 +172,20 @@
 
 .btn:hover {
   background: rgba(255,255,255,0.25);
+}
+
+/*  responzivna  */
+@media (max-width: 600px) {
+  .naslov h2 {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    padding: 18px 18px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

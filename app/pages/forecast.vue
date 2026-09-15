@@ -221,7 +221,7 @@ function brzoBaraj(imeGrad) {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px 16px;
 }
 
 .logo {
@@ -237,6 +237,8 @@ function brzoBaraj(imeGrad) {
 
 .dobrodojde {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   color: rgba(255,255,255,0.6);
   font-size: 0.9rem;
@@ -246,6 +248,7 @@ function brzoBaraj(imeGrad) {
   display: flex;
   gap: 10px;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 input {
@@ -256,7 +259,8 @@ input {
   background: rgba(255,255,255,0.1);
   color: white;
   outline: none;
-  flex: 1;              
+  flex: 1;
+  min-width: 140px;
 }
 input::placeholder { color: rgba(255,255,255,0.5); }
 input:focus { border-color: rgba(255,255,255,0.6); }
@@ -434,5 +438,48 @@ button:hover { background: rgba(0,0,0,0.35); }
 
 .lokacijaBtn {
   white-space: nowrap;
+}
+
+/* responzivna */
+@media (max-width: 600px) {
+  .page {
+    padding: 16px 12px;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .search {
+    flex-direction: column;
+  }
+
+  input, .search button {
+    width: 100%;
+  }
+
+  .rezultat h2 {
+    font-size: 1.15rem;
+  }
+
+  .den {
+    min-width: 130px;
+    padding: 16px 10px;
+  }
+
+  .denTemp {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .denovi {
+    gap: 10px;
+  }
+
+  .den {
+    min-width: 100%;
+  }
 }
 </style>

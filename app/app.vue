@@ -73,7 +73,7 @@ function promeniRezim() {
   text-align: center;
   background: linear-gradient(135deg, #0951a4, #0361bf, #156ab0);
   color: white;
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
 }
 
@@ -88,10 +88,12 @@ header h1 {
 
 nav {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
   margin-bottom: 30px;
   margin-top: 20px;
+  padding: 0 16px;
 }
 
 nav a {
@@ -150,31 +152,28 @@ main {
   position: relative;
   z-index: 1;
   flex: 1;
+  width: 100%;
+  padding: 0 16px;
+  gap: 20px;
 }
 
 main {
   flex: 1;
+  width: 100%;
   max-width: 600px;
   position: relative;
   z-index: 1;
+  min-width: 0;
 }
 
 .sidepanel {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
+  position: sticky;
+  top: 16px;
   width: 160px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.sidepanel:first-of-type {
-  left: 16px;    
-}
-
-.sidepanel:last-of-type {
-  right: 16px;   
 }
 
 .sidecard {
@@ -246,5 +245,67 @@ footer {
 .app.temno footer {
   background: rgba(0,0,0,0.25);
   border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ===== responzivna ===== */
+@media (max-width: 1024px) {
+  .sidepanel {
+    width: 130px;
+  }
+  .layout {
+    gap: px;
+  }
+}
+
+/* stranivnite paneli gi krieme*/
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+  }
+
+  nav {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  nav a,
+  .modeBtn {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .layout {
+    padding: 0 12px;
+  }
+
+  .sidepanel {
+    display: none;
+  }
+
+  main {
+    max-width: 100%;
+  }
+
+  footer {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 420px) {
+  header h1 {
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+  }
+
+  nav {
+    gap: 8px;
+  }
+
+  nav a,
+  .modeBtn {
+    padding: 7px 12px;
+    font-size: 0.82rem;
+  }
 }
 </style>

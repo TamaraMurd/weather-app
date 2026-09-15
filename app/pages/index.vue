@@ -232,13 +232,14 @@ function brzoBaraj(imeGrad) {
   margin: 0 auto;
   min-height: 40vh;
   justify-content: center;   
-  padding: 20px 0;
+  padding: 20px 16px;
 }
 
 .search {
   display: flex;
   gap: 10px;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 input {
@@ -249,7 +250,8 @@ input {
   background: rgba(255,255,255,0.1);
   color: white;
   outline: none;
-  flex: 1;          
+  flex: 1;
+  min-width: 140px;
 }
 
 input::placeholder { color: rgba(255,255,255,0.5); }
@@ -304,6 +306,11 @@ button:hover { background: rgba(0,0,0,0.35); }
   font-weight: 700;
   line-height: 1;
   margin: 8px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 .opis {
@@ -318,10 +325,12 @@ button:hover { background: rgba(0,0,0,0.35); }
   gap: 16px;
   margin-top: 16px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .detalItem {
   flex: 1;
+  min-width: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -341,6 +350,8 @@ button:hover { background: rgba(0,0,0,0.35); }
 
 .dobrodojde {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   color: rgba(255,255,255,0.6);
   font-size: 0.9rem;
@@ -384,7 +395,7 @@ button:hover { background: rgba(0,0,0,0.35); }
 .unitBtn {
   font-size: 0.9rem;
   padding: 6px 14px;
-  margin-left: 12px;
+  margin-left: 0;
   vertical-align: middle;
   background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.3);
@@ -415,5 +426,66 @@ button:hover { background: rgba(0,0,0,0.35); }
 
 .lokacijaBtn {
   white-space: nowrap;
+}
+
+/* responzivna */
+@media (max-width: 600px) {
+  .page {
+    gap: 14px;
+    padding: 16px 12px;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .search {
+    flex-direction: column;
+  }
+
+  input, .search button {
+    width: 100%;
+  }
+
+  .result {
+    padding: 24px 18px;
+  }
+
+  .result h2 {
+    font-size: 1.5rem;
+  }
+
+  .temp {
+    font-size: 3rem;
+  }
+
+  .detali {
+    gap: 10px;
+  }
+
+  .detalItem {
+    min-width: 80px;
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+
+  .dobrodojde {
+    gap: 10px;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .temp {
+    font-size: 2.3rem;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .result h2 {
+    font-size: 1.3rem;
+  }
 }
 </style>

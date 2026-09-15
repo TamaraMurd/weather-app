@@ -100,7 +100,7 @@ function praticFeedback() {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px 16px;
 }
 
 .logo {
@@ -152,6 +152,7 @@ input, textarea {
   outline: none;
   font-family: system-ui, sans-serif;
   resize: none;
+  width: 100%;
 }
 
 input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
@@ -196,6 +197,7 @@ button:hover { background: rgba(0,0,0,0.4); }
   border-radius: 16px;
   padding: 20px 32px;
   text-align: center;
+  width: 100%;
 }
 
 .uspeh p { font-size: 1.1rem; }
@@ -228,6 +230,8 @@ button:hover { background: rgba(0,0,0,0.4); }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .feedbackIme {
@@ -261,4 +265,33 @@ button:hover { background: rgba(0,0,0,0.4); }
   background: rgba(255,255,255,0.25);
 }
 
+/* responzivna */
+@media (max-width: 600px) {
+  .page {
+    padding: 16px 12px;
+    gap: 14px;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .naslov h2 {
+    font-size: 1.4rem;
+  }
+
+  .forma {
+    padding: 22px 18px;
+    gap: 16px;
+  }
+
+  .zvezda {
+    font-size: 1.6rem;
+  }
+
+  .uspeh {
+    padding: 16px 18px;
+  }
+}
 </style>
